@@ -12,5 +12,15 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return 'index';
+});
+
+Route::prefix('dashboard')->name('dashboard.')->group(function () {
+    Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+    Route::post('login', 'Auth\LoginController@login');
+    Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\IndexController::class, 'index'])->name('index');
+    });
 });
